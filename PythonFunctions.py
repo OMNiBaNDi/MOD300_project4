@@ -47,7 +47,7 @@ def make_mw_sector(
     if radius_y_arcsec is None:
         radius_y_arcsec = radius_x_arcsec
 
-    radius = (radius_x_arcsec * u.arcsec, radius_y_arcsec * u.arcsec)
+    radius = (radius_x_arcsec , radius_y_arcsec)* u.arcsec
 
     mw = MWSkyMap(
         grayscale=grayscale,
