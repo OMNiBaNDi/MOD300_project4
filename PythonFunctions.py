@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from astropy import units as u
 from mw_plot import MWSkyMap
+from numpy import numpy as np
 
 
 # Task 2 - Reusable Milky way sector plot and fig function
@@ -68,3 +69,42 @@ def make_mw_sector(
         plt.show()
 
     return fig, ax
+
+# Task 3
+def plt2rgbarr(fig):
+    """
+    A function to transform a matplotlib to a 3d rgb np.array 
+
+    Input
+    -----
+    fig: matplotlib.figure.Figure
+        The plot that we want to encode.        
+
+    Output
+    ------
+    np.array(ndim, ndim, 3): A 3d map of each pixel in a rgb encoding (the three dimensions are x, y, and rgb)
+    
+    """
+    fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
+    fig.canvas.draw()
+    rgba_buf = fig.canvas.buffer_rgba()
+    w, h = fig.canvas.get_width_height()
+    rgba_arr = np.frombuffer(rgba_buf, dtype=np.uint8).reshape((h, w, 4))
+    return rgba_arr[:, :, :3]
+
+
+# Task 4
+
+img_array = plt2rgbarr(fig)
+print(img_array.shape)  
+
+# A grey encoding
+grey = np.sum(img_array[: , : , :] * np.array([0.299, 0.587, 0.114]), axis=2)  # From RGB to grey
+x, y = [], []
+for ig, g in enumerate(grey):
+    for ij, j in enumerate(g):
+        if j > 230:
+            x.append(ig)
+            y.append(ij)
+
+    
