@@ -107,4 +107,4 @@ for ig, g in enumerate(grey):
             x.append(ig)
             y.append(ij)
 
-    
+plt.scatter(x, y, s=0.1)
